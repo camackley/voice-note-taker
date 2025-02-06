@@ -1,5 +1,5 @@
 {
   "appName": "VoiceNote Tacker",
 
-  "record_button__slide_to_cancel": "Slide to cancel <"
+  "record_button__press_and_hold": "Press and hold to record the voice note"
 }

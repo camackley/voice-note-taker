@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:telepatia_ai/config/config.dart';
 
 void main() => runApp(const ProviderScope(
-      child: MyApp(),
+      child: SafeArea(child: MyApp()),
     ));
 
 class MyApp extends ConsumerWidget {

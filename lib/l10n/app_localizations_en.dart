@@ -10,5 +10,5 @@ class AppLocalizationsEn extends AppLocalizations {
   String get appName => 'VoiceNote Tacker';
 
   @override
-  String get record_button__slide_to_cancel => 'Slide to cancel <';
+  String get record_button__press_and_hold => 'Press and hold to record the voice note';
 }

@@ -99,11 +99,11 @@ abstract class AppLocalizations {
   /// **'VoiceNote Tacker'**
   String get appName;
 
-  /// No description provided for @record_button__slide_to_cancel.
+  /// No description provided for @record_button__press_and_hold.
   ///
   /// In en, this message translates to:
-  /// **'Slide to cancel <'**
-  String get record_button__slide_to_cancel;
+  /// **'Press and hold to record the voice note'**
+  String get record_button__press_and_hold;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

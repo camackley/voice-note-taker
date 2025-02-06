@@ -1,4 +1,4 @@
-package com.example.telepatia_ai
+package com.camackley.telepatia_ai
 
 import io.flutter.embedding.android.FlutterActivity
 
