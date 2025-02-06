@@ -104,6 +104,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Press and hold to record the voice note'**
   String get record_button__press_and_hold;
+
+  /// No description provided for @record_label__uploading.
+  ///
+  /// In en, this message translates to:
+  /// **'Saving voice note'**
+  String get record_label__uploading;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

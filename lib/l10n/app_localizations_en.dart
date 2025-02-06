@@ -11,4 +11,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get record_button__press_and_hold => 'Press and hold to record the voice note';
+
+  @override
+  String get record_label__uploading => 'Saving voice note';
 }
