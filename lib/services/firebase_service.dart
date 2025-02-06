@@ -24,11 +24,34 @@ class FirebaseService {
   }
 
   Future<void> saveInDatabase(
-      String collection, Map<String, Object> data) async {
+      String collection,
+      String deviceId,
+      Map<String, Object> data
+    ) async {
     await _dbRef
         .collection(collection)
+        .doc(deviceId)
+        .collection("files")
         .doc(_uuid.v4())
         .set(data, SetOptions(merge: true))
         .onError((e, _) => debugPrint("Error saving data: $e"));
+  }
+
+  Future<List<Map<String, dynamic>>> readSubCollection(
+      String collection, String docId, String subCollection) async {
+    try {
+      QuerySnapshot querySnapshot = await _dbRef
+          .collection(collection)
+          .doc(docId)
+          .collection(subCollection)
+          .get();
+
+      return querySnapshot.docs
+          .map((doc) => {'id': doc.id, ...doc.data() as Map<String, dynamic>})
+          .toList();
+    } catch (e) {
+      debugPrint("Error reading sub collection: $e");
+      return [];
+    }
   }
 }

@@ -1,6 +1,9 @@
 {
   "appName": "VoiceNote Tacker",
 
-  "record_button__press_and_hold": "Press and hold to record the voice note",
+  "home__empty_stage": "Record your first Voice Note",
+
+  "record_button__press_to_start": "Press to record the voice note",
+  "record_button__press_to_stop": "Press to stop the voice note",
   "record_label__uploading": "Saving voice note"
 }

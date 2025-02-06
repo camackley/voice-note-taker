@@ -99,11 +99,23 @@ abstract class AppLocalizations {
   /// **'VoiceNote Tacker'**
   String get appName;
 
-  /// No description provided for @record_button__press_and_hold.
+  /// No description provided for @home__empty_stage.
   ///
   /// In en, this message translates to:
-  /// **'Press and hold to record the voice note'**
-  String get record_button__press_and_hold;
+  /// **'Record your first Voice Note'**
+  String get home__empty_stage;
+
+  /// No description provided for @record_button__press_to_start.
+  ///
+  /// In en, this message translates to:
+  /// **'Press to record the voice note'**
+  String get record_button__press_to_start;
+
+  /// No description provided for @record_button__press_to_stop.
+  ///
+  /// In en, this message translates to:
+  /// **'Press to stop the voice note'**
+  String get record_button__press_to_stop;
 
   /// No description provided for @record_label__uploading.
   ///

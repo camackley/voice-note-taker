@@ -8,6 +8,7 @@ import 'package:telepatia_ai/services/firebase_service.dart';
 import 'package:telepatia_ai/states/recording_state/recording_state.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:telepatia_ai/states/uploading_state/uploading_state.dart';
+import 'package:telepatia_ai/states/voice_notes_state/voice_notes_state.dart';
 import 'package:telepatia_ai/utils/device.dart';
 import 'package:uuid/uuid.dart';
 
@@ -43,7 +44,7 @@ class _RecordScreenState extends ConsumerState<RecordScreen> {
     }
   }
 
-  Future<void> stopRecord(bool isRecording, WidgetRef ref) async {
+  Future<void> stopRecord(bool isRecording) async {
     try {
       await _recorder.stop();
 
@@ -56,13 +57,23 @@ class _RecordScreenState extends ConsumerState<RecordScreen> {
         final url = await firebaseService.saveInBucket(
             "$deviceId/${uuid.v4()}", _audioPath!);
 
-        await firebaseService.saveInDatabase("voice-notes",
+        await firebaseService.saveInDatabase("voice-notes", deviceId,
             {"url": url, "deviceId": deviceId, "createdAt": DateTime.now()});
 
+        ref.invalidate(voiceNotesProvider);
+        await ref.refresh(voiceNotesProvider.future);
         ref.read(uploadingProvider.notifier).setState(false);
       }
     } catch (e) {
       debugPrint("Error stopping the record: $e");
+    }
+  }
+
+  void handleRecording(bool isRecording) {
+    if (isRecording) {
+      stopRecord(isRecording);
+    } else {
+      startRecord();
     }
   }
 
@@ -87,9 +98,7 @@ class _RecordScreenState extends ConsumerState<RecordScreen> {
             mainAxisSize: MainAxisSize.min,
             children: [
               GestureDetector(
-                onLongPressDown: (_) => startRecord(),
-                onLongPressUp: () => stopRecord(isRecording, ref),
-                onLongPressCancel: () => stopRecord(isRecording, ref),
+                onTap: () => handleRecording(isRecording),
                 child: Container(
                   margin: EdgeInsets.all(16),
                   padding: EdgeInsets.all(36),
@@ -107,8 +116,8 @@ class _RecordScreenState extends ConsumerState<RecordScreen> {
                     ],
                   ),
                   child: Icon(
-                    Icons.mic,
-                    size: isRecording ? 150 : 120,
+                    isRecording ? Icons.stop : Icons.mic,
+                    size: 120,
                     color: isRecording
                         ? colorScheme.onPrimary
                         : colorScheme.onPrimaryContainer,
@@ -119,40 +128,55 @@ class _RecordScreenState extends ConsumerState<RecordScreen> {
               SizedBox(
                 width: MediaQuery.of(context).size.width * 0.6,
                 child: Text(
-                    AppLocalizations.of(context)!.record_button__press_and_hold,
+                    isRecording
+                        ? AppLocalizations.of(context)!
+                            .record_button__press_to_stop
+                        : AppLocalizations.of(context)!
+                            .record_button__press_to_start,
                     style: Theme.of(context).textTheme.headlineSmall,
                     textAlign: TextAlign.center),
               )
             ],
           )),
         ),
-
-        if (isUploading)
-        Positioned.fill(
-          child: Stack(
-            children: [
-              ModalBarrier(
-                color: Colors.black.withOpacity(0.3),
-                dismissible: false,
-              ),
-              Center(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    CircularProgressIndicator(),
-                    SizedBox(height: 24),
-                    Text(
-                      AppLocalizations.of(context)!.record_label__uploading,
-                      style: Theme.of(context).textTheme.headlineSmall!
-                        .copyWith(color: colorScheme.surface),
-                    )
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
+        if (isUploading) _Uploading()
       ],
+    );
+  }
+}
+
+class _Uploading extends ConsumerWidget {
+  const _Uploading();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final colorScheme = Theme.of(context).colorScheme;
+
+    return Positioned.fill(
+      child: Stack(
+        children: [
+          ModalBarrier(
+            color: Colors.black.withOpacity(0.3),
+            dismissible: false,
+          ),
+          Center(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                CircularProgressIndicator(),
+                SizedBox(height: 24),
+                Text(
+                  AppLocalizations.of(context)!.record_label__uploading,
+                  style: Theme.of(context)
+                      .textTheme
+                      .headlineSmall!
+                      .copyWith(color: colorScheme.surface),
+                )
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
