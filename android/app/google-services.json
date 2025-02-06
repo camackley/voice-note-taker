@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "36018067940",
+    "firebase_url": "https://stealth-comerce-default-rtdb.firebaseio.com",
+    "project_id": "stealth-comerce",
+    "storage_bucket": "stealth-comerce.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:36018067940:android:964e5a5f72b025dec1cff1",
+        "android_client_info": {
+          "package_name": "com.camackley.telepatia_ai"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC4vLQXp_BKjUDGRtxsYb6VJ5xyVdwLF7o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
