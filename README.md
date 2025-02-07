@@ -31,18 +31,18 @@ Before running the application, ensure you have the following installed:
    flutter pub get
    ```
 
-3. **Setup Firebase using FlutterFire CLI**
+3. **Run the application**
+   ```sh
+   flutter run
+   ```
+
+4. **(Optional) Setup Firebase using FlutterFire CLI**
    - Run the following command in the root of your project:
      ```sh
      flutterfire configure
      ```
    - Select your Firebase project and choose the platforms you want to configure.
    - This will generate `firebase_options.dart` inside the `lib` directory, automatically setting up Firebase for your project.
-
-4. **Run the application**
-   ```sh
-   flutter run
-   ```
 
 ## What Could Be Improved With More Time
 1. **Unit and Integration Tests**
