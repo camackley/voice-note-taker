@@ -58,9 +58,3 @@ Before running the application, ensure you have the following installed:
    - Improve storage optimization by compressing audio files before upload.
    - Implement caching mechanisms to minimize network requests for repeated audio playback.
    - Explore alternatives such as a dedicated backend service for processing audio files if the project scales significantly.
-
-## Conclusion
-This project provides a solid foundation for a voice note-taking app with cloud capabilities. With additional time and resources, improvements in testing, error handling, and scalability would be the next logical steps.
-
-For any questions or contributions, feel free to open an issue or submit a pull request!
-
