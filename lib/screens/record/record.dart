@@ -45,33 +45,35 @@ class _RecordScreenState extends ConsumerState<RecordScreen> {
   }
 
   Future<void> stopRecord(bool isRecording) async {
-    try {
-      await _recorder.stop();
+  try {
+    await _recorder.stop();
 
-      if (isRecording) {
-        ref.read(recordingProvider.notifier).setState(false);
-        ref.read(uploadingProvider.notifier).setState(true);
+    if (isRecording) {
+      ref.read(recordingProvider.notifier).setState(false);
+      ref.read(uploadingProvider.notifier).setState(true);
 
-        final deviceId = await getOrGenerateDeviceId();
+      final deviceId = await getOrGenerateDeviceId();
 
-        final url = await firebaseService.saveInBucket(
-            "$deviceId/${uuid.v4()}", _audioPath!);
+      final url = await firebaseService.saveInBucket(
+          "$deviceId/${uuid.v4()}", _audioPath!, ref);
 
-        await firebaseService.saveInDatabase("voice-notes", deviceId,
-            {"url": url, "deviceId": deviceId, "createdAt": DateTime.now()});
+      await firebaseService.saveInDatabase("voice-notes", deviceId,
+          {"url": url, "deviceId": deviceId, "createdAt": DateTime.now()});
 
-        ref.invalidate(voiceNotesProvider);
-        await ref.refresh(voiceNotesProvider.future);
-        ref.read(uploadingProvider.notifier).setState(false);
-      }
-    } catch (e) {
-      debugPrint("Error stopping the record: $e");
+      ref.invalidate(voiceNotesProvider);
+      await ref.refresh(voiceNotesProvider.future);
+      ref.read(uploadingProvider.notifier).setState(false);
+      ref.read(uploadingProgressProvider.notifier).setState(0.0);
     }
+  } catch (e) {
+    debugPrint("Error stopping the record: $e");
   }
+}
+
 
   void handleRecording(bool isRecording) {
     if (isRecording) {
-      stopRecord(isRecording);
+      stopRecord(isRecording, );
     } else {
       startRecord();
     }
@@ -151,6 +153,7 @@ class _Uploading extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final colorScheme = Theme.of(context).colorScheme;
+    final progress = ref.watch(uploadingProgressProvider);
 
     return Positioned.fill(
       child: Stack(
@@ -163,7 +166,18 @@ class _Uploading extends ConsumerWidget {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                CircularProgressIndicator(),
+                SizedBox(
+                  width: 200,
+                  child: LinearProgressIndicator(value: progress),
+                ),
+                SizedBox(height: 12),
+                Text(
+                  "${(progress * 100).toStringAsFixed(1)}%",
+                  style: Theme.of(context)
+                      .textTheme
+                      .headlineSmall!
+                      .copyWith(color: colorScheme.surface),
+                ),
                 SizedBox(height: 24),
                 Text(
                   AppLocalizations.of(context)!.record_label__uploading,

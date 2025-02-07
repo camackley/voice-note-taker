@@ -13,3 +13,15 @@ class Uploading extends _$Uploading {
     state = newState;
   }
 }
+
+@riverpod
+class UploadingProgress extends _$UploadingProgress {
+  @override
+  double build() {
+    return 0.0;
+  }
+
+  void setState(double newValue) {
+    state = newValue;
+  }
+}
